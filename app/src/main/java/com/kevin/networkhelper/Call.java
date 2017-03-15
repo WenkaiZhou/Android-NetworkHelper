@@ -8,7 +8,7 @@ import okhttp3.Request;
  * Created by zhouwenkai on 2017/2/7.
  */
 
-public interface Call<T> extends Cloneable {
+public interface CAll<T> extends Cloneable {
 
     Request request();
 
