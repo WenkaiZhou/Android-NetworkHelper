@@ -7,11 +7,8 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import okhttp3.*;
 import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,23 +34,24 @@ public class MainActivity extends AppCompatActivity {
                 .get()
                 .build();
         // 3. 创建Call对象
-        Call call = client.newCall(request);
+        okhttp3.Call call = client.newCall(request);
         // 4. 使用OkHttpCall对Call进行包装
-        OkHttpCall okhttpCall = new OkHttpCall(call);
+        OkHttpCall<String> okHttpCall = new OkHttpCall<>(call);
         // 5. 调用OkHttpCall对象的enqueue(异步)发送请求
-        okhttpCall.enqueue(new Callback() {
+        okHttpCall.enqueue(new Callback<String>() {
             @Override
             public void onFailure(Call call, IOException e) {
 
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, Response<String> response) {
                 // 6. 获得Response对象当中的数据
-                String responseStr = response.body().string();
+                String responseStr = response.data();
                 Log.d(TAG, "responseStr: " + responseStr);
                 textView.setText(responseStr);
             }
         });
     }
+
 }
